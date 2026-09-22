@@ -321,7 +321,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get settingsTestNotificationSent =>
-      'Llega en unos segundos. Puedes salir de la app para verla.';
+      'Enviada. Tócala para abrir la ficha de la raza.';
 
   @override
   String get settingsNotificationsDenied =>
@@ -391,4 +391,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String routeNotFoundMessage(String path) {
     return 'No hay nada en $path.';
   }
+
+  @override
+  String get settingsNoBreedsYet =>
+      'Todavía no hay razas guardadas. Abre el directorio con conexión y vuelve a intentarlo.';
+
+  @override
+  String get settingsDailyBreedOn =>
+      'Listo: la próxima raza del día ya está programada.';
 }

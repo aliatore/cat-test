@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  NekoDex: icono pequeno de notificacion. Solo blanco sobre transparente (Android
+  usa unicamente el canal alfa). Geometria canonica de la cabeza en un viewport de 512.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <!-- Contorno de la cabeza -->
+    <path
+        android:pathData="M136,96 L206,172 L256,166 L306,172 L376,96 L390,208 L414,290 L358,370 L256,406 L154,370 L98,290 L122,208 Z"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="28"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Orejas interiores -->
+    <path
+        android:pathData="M137,186 L144,124 L183,166 M375,186 L368,124 L329,166"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="28"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Ojos (rellenos; trazo fino solo para redondear las esquinas) -->
+    <path
+        android:pathData="M164,262 L222,244 L236,270 L182,288 Z M348,262 L290,244 L276,270 L330,288 Z"
+        android:fillColor="#FFFFFFFF"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="14"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <!-- Nariz -->
+    <path
+        android:pathData="M242,314 L270,314 L256,330 Z"
+        android:fillColor="#FFFFFFFF"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="14"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+</vector>

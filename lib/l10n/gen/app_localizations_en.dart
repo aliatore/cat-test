@@ -321,7 +321,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsTestNotificationSent =>
-      'It arrives in a few seconds. You can leave the app to see it.';
+      'Sent. Tap it to open the breed profile.';
 
   @override
   String get settingsNotificationsDenied =>
@@ -391,4 +391,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String routeNotFoundMessage(String path) {
     return 'There\'s nothing at $path.';
   }
+
+  @override
+  String get settingsNoBreedsYet =>
+      'No breeds saved yet. Open the directory while online and try again.';
+
+  @override
+  String get settingsDailyBreedOn =>
+      'Done: the next breed of the day is scheduled.';
 }

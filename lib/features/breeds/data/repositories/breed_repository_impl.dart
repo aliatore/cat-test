@@ -101,16 +101,22 @@ class BreedRepositoryImpl implements BreedRepository {
   }
 
   @override
+  List<Breed> cachedBreeds() {
+    final seen = <String>{};
+    final breeds = <Breed>[];
+    for (final entry in _validEntries()) {
+      for (final dto in entry.dto.data) {
+        if (dto.breed.trim().isEmpty) continue;
+        final breed = dto.toEntity();
+        if (seen.add(breed.slug)) breeds.add(breed);
+      }
+    }
+    return breeds;
+  }
+
+  @override
   BreedsCacheInfo cacheInfo() {
-    final now = _clock.now();
-    final valid = _local
-        .readAll()
-        .where(
-          (e) =>
-              e.dto.perPage == _pageSize &&
-              _policy.evaluate(e.storedAt, now) != CacheFreshness.expired,
-        )
-        .toList();
+    final valid = _validEntries();
     if (valid.isEmpty) return BreedsCacheInfo.empty;
     return BreedsCacheInfo(
       pages: valid.length,
@@ -140,6 +146,20 @@ class BreedRepositoryImpl implements BreedRepository {
   Future<void> clearCache() async {
     _index.clear();
     await _local.clear();
+  }
+
+  /// Paginas guardadas con el tamano actual y sin expirar, ordenadas.
+  List<CachedBreedsPage> _validEntries() {
+    final now = _clock.now();
+    return _local
+        .readAll()
+        .where(
+          (e) =>
+              e.dto.perPage == _pageSize &&
+              _policy.evaluate(e.storedAt, now) != CacheFreshness.expired,
+        )
+        .toList()
+      ..sort((a, b) => a.dto.currentPage.compareTo(b.dto.currentPage));
   }
 
   _CachedPage? _readCache(int page) {

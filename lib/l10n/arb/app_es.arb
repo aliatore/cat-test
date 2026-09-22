@@ -3,42 +3,109 @@
   "appName": "NekoDex",
   "directoryTagline": "Directorio felino",
   "directoryCount": "{count, plural, =0{Sin razas} =1{1 raza en la red} other{{count} razas en la red}}",
-  "@directoryCount": {"placeholders": {"count": {"type": "int"}}},
-
+  "@directoryCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "searchHint": "buscar_raza…",
   "searchLabel": "Buscar raza por nombre",
   "searchClear": "Borrar búsqueda",
   "searchResults": "{count, plural, =0{Sin coincidencias} =1{1 coincidencia} other{{count} coincidencias}}",
-  "@searchResults": {"placeholders": {"count": {"type": "int"}}},
+  "@searchResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "searchScope": "Buscando entre {count} razas cargadas",
-  "@searchScope": {"placeholders": {"count": {"type": "int"}}},
+  "@searchScope": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "searchLoadMore": "Cargar más razas",
-
   "statusLive": "En vivo",
   "statusCache": "Caché",
   "statusOffline": "Sin señal",
   "statusSyncing": "Sincronizando",
   "statusSemantics": "Estado de los datos: {status}",
-  "@statusSemantics": {"placeholders": {"status": {"type": "String"}}},
-
+  "@statusSemantics": {
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
   "bannerOffline": "Sin conexión. Mostrando datos guardados {age}.",
-  "@bannerOffline": {"placeholders": {"age": {"type": "String"}}},
+  "@bannerOffline": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
   "bannerOfflineEmpty": "Sin conexión a internet.",
   "bannerRetrying": "Reconectando… intento {attempt} de {max}",
-  "@bannerRetrying": {"placeholders": {"attempt": {"type": "int"}, "max": {"type": "int"}}},
+  "@bannerRetrying": {
+    "placeholders": {
+      "attempt": {
+        "type": "int"
+      },
+      "max": {
+        "type": "int"
+      }
+    }
+  },
   "bannerStale": "Datos guardados {age}. Actualizando en segundo plano…",
-  "@bannerStale": {"placeholders": {"age": {"type": "String"}}},
-
+  "@bannerStale": {
+    "placeholders": {
+      "age": {
+        "type": "String"
+      }
+    }
+  },
   "ageJustNow": "hace un momento",
   "ageMinutes": "{count, plural, =1{hace 1 minuto} other{hace {count} minutos}}",
-  "@ageMinutes": {"placeholders": {"count": {"type": "int"}}},
+  "@ageMinutes": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "ageHours": "{count, plural, =1{hace 1 hora} other{hace {count} horas}}",
-  "@ageHours": {"placeholders": {"count": {"type": "int"}}},
+  "@ageHours": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "ageDays": "{count, plural, =1{hace 1 día} other{hace {count} días}}",
-  "@ageDays": {"placeholders": {"count": {"type": "int"}}},
-
+  "@ageDays": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "breedTileSemantics": "{name}. País: {country}.",
-  "@breedTileSemantics": {"placeholders": {"name": {"type": "String"}, "country": {"type": "String"}}},
+  "@breedTileSemantics": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "country": {
+        "type": "String"
+      }
+    }
+  },
   "breedTileHint": "ver ficha",
   "unknownCountry": "País desconocido",
   "unknownValue": "Sin datos",
@@ -47,8 +114,13 @@
   "paginationError": "No se pudo cargar la página siguiente. La lista sigue aquí.",
   "retry": "Reintentar",
   "endOfList": "Fin del directorio · {count} razas",
-  "@endOfList": {"placeholders": {"count": {"type": "int"}}},
-
+  "@endOfList": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "errorOfflineTitle": "Sin conexión a la red felina",
   "errorOfflineMessage": "Todavía no hay datos guardados en este teléfono. Reintentamos solos cuando vuelva la conexión.",
   "errorServerTitle": "La API no responde",
@@ -57,26 +129,34 @@
   "errorRateLimitedMessage": "La API pide un respiro. Espera unos segundos y reintenta.",
   "errorGenericTitle": "Algo salió mal",
   "errorGenericMessage": "No pudimos cargar el directorio. Reintenta en un momento.",
-
   "emptySearchTitle": "Ningún gato responde a «{query}»",
-  "@emptySearchTitle": {"placeholders": {"query": {"type": "String"}}},
+  "@emptySearchTitle": {
+    "placeholders": {
+      "query": {
+        "type": "String"
+      }
+    }
+  },
   "emptySearchMessage": "La búsqueda es sobre las razas ya cargadas. Carga más o prueba otro nombre.",
-
   "noticeShowingCache": "Sin conexión: mostrando datos guardados.",
   "noticeRefreshFailed": "No se pudo actualizar. La lista sigue disponible.",
   "noticeBackOnline": "Conexión restablecida",
   "noticeRefreshed": "Directorio actualizado",
   "noticeRateLimited": "La API pide un respiro. Reintenta en unos segundos.",
-
   "settingsTooltip": "Ajustes",
   "backTooltip": "Volver",
-
   "detailCountry": "País",
   "detailOrigin": "Origen",
   "detailCoat": "Pelaje",
   "detailPattern": "Patrón",
   "detailSerial": "ID {serial}",
-  "@detailSerial": {"placeholders": {"serial": {"type": "String"}}},
+  "@detailSerial": {
+    "placeholders": {
+      "serial": {
+        "type": "String"
+      }
+    }
+  },
   "detailLoading": "Buscando la raza…",
   "detailNotFoundTitle": "Esa raza no está en el directorio",
   "detailNotFoundMessage": "Puede que el enlace esté mal escrito. Vuelve al listado y búscala allí.",
@@ -84,9 +164,14 @@
   "detailCopyLink": "Copiar enlace",
   "detailLinkCopied": "Enlace copiado",
   "detailAvatarSemantics": "Avatar de {name}",
-  "@detailAvatarSemantics": {"placeholders": {"name": {"type": "String"}}},
+  "@detailAvatarSemantics": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "detailPetHint": "Tócalo para acariciarlo",
-
   "factTitle": "Dato curioso",
   "factLoading": "Consultando la red felina…",
   "factAnother": "Otro dato",
@@ -95,7 +180,6 @@
   "factSavedHint": "Sin conexión: es un dato que ya habías visto.",
   "factError": "No pudimos traer un dato curioso.",
   "factLanguage": "Los datos llegan en inglés desde la API.",
-
   "settingsTitle": "Ajustes",
   "settingsTheme": "Tema",
   "themeSystem": "Sistema",
@@ -105,14 +189,32 @@
   "settingsSoundDescription": "Respetan el modo silencio y no pausan tu música.",
   "settingsDailyBreed": "Raza del día",
   "settingsDailyBreedDescription": "Una notificación local cada día a las {time} con una raza del directorio.",
-  "@settingsDailyBreedDescription": {"placeholders": {"time": {"type": "String"}}},
+  "@settingsDailyBreedDescription": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
   "settingsTestNotification": "Enviar notificación de prueba",
-  "settingsTestNotificationSent": "Llega en unos segundos. Puedes salir de la app para verla.",
+  "settingsTestNotificationSent": "Enviada. Tócala para abrir la ficha de la raza.",
   "settingsNotificationsDenied": "Las notificaciones de NekoDex están desactivadas en el sistema.",
   "settingsOpenSystemSettings": "Abrir ajustes",
   "settingsCache": "Caché del directorio",
   "settingsCacheSummary": "{breeds} razas · {pages} páginas · {age}",
-  "@settingsCacheSummary": {"placeholders": {"breeds": {"type": "int"}, "pages": {"type": "int"}, "age": {"type": "String"}}},
+  "@settingsCacheSummary": {
+    "placeholders": {
+      "breeds": {
+        "type": "int"
+      },
+      "pages": {
+        "type": "int"
+      },
+      "age": {
+        "type": "String"
+      }
+    }
+  },
   "settingsCacheEmpty": "Vacía",
   "settingsCachePolicy": "Fresca 5 min · se revalida hasta 7 días · luego se descarta",
   "settingsClearCache": "Borrar caché",
@@ -120,18 +222,44 @@
   "settingsPerformanceOverlay": "Overlay de rendimiento",
   "settingsPerformanceOverlayDescription": "Muestra las gráficas de frames de la GPU y la UI.",
   "settingsAbout": "Datos de catfact.ninja · v{version}",
-  "@settingsAbout": {"placeholders": {"version": {"type": "String"}}},
-
+  "@settingsAbout": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
   "notificationChannelName": "Raza del día",
   "notificationChannelDescription": "Una raza del directorio cada día.",
   "notificationBreedTitle": "Raza del día: {name}",
-  "@notificationBreedTitle": {"placeholders": {"name": {"type": "String"}}},
+  "@notificationBreedTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "notificationBreedBody": "{country} · pelaje {coat}. Toca para ver su ficha.",
-  "@notificationBreedBody": {"placeholders": {"country": {"type": "String"}, "coat": {"type": "String"}}},
-
+  "@notificationBreedBody": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "coat": {
+        "type": "String"
+      }
+    }
+  },
   "splashSkip": "Toca para saltar",
-
   "routeNotFoundTitle": "Ruta desconocida",
   "routeNotFoundMessage": "No hay nada en {path}.",
-  "@routeNotFoundMessage": {"placeholders": {"path": {"type": "String"}}}
+  "@routeNotFoundMessage": {
+    "placeholders": {
+      "path": {
+        "type": "String"
+      }
+    }
+  },
+  "settingsNoBreedsYet": "Todavía no hay razas guardadas. Abre el directorio con conexión y vuelve a intentarlo.",
+  "settingsDailyBreedOn": "Listo: la próxima raza del día ya está programada."
 }

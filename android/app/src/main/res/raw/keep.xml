@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Recursos que solo se referencian por nombre desde Dart (icono y sonido de
+     las notificaciones). Sin esto, el shrinker de release los borra. -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@drawable/ic_stat_nekodex,@raw/nekodex_notify" />

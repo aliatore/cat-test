@@ -19,6 +19,9 @@ abstract interface class BreedRepository {
   /// notificaciones, que pueden llegar sin la lista cargada.
   Future<Result<Breed>> findBySlug(String slug);
 
+  /// Razas disponibles sin red (cache no expirada), en orden del directorio.
+  List<Breed> cachedBreeds();
+
   BreedsCacheInfo cacheInfo();
 
   Future<void> purgeExpired();

@@ -5,9 +5,11 @@ import 'package:cat_directory_app/app/view/route_not_found_page.dart';
 import 'package:cat_directory_app/core/utils/slug.dart';
 import 'package:cat_directory_app/features/breeds/domain/entities/breed.dart';
 import 'package:cat_directory_app/features/breeds/presentation/bloc/breed_detail_cubit.dart';
+import 'package:cat_directory_app/features/breeds/presentation/bloc/breeds_cache_cubit.dart';
 import 'package:cat_directory_app/features/breeds/presentation/pages/breed_detail_page.dart';
 import 'package:cat_directory_app/features/breeds/presentation/pages/breeds_page.dart';
 import 'package:cat_directory_app/features/facts/presentation/bloc/cat_fact_bloc.dart';
+import 'package:cat_directory_app/features/settings/presentation/settings_sheet.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -21,7 +23,7 @@ abstract final class AppRoutes {
 
 /// `/breed/:name` es una sub-ruta de `/`: al abrir un deep link la pila queda
 /// [directorio, detalle] y "atras" lleva al listado en vez de cerrar la app.
-GoRouter buildRouter({String? initialLocation, VoidCallback? onOpenSettings}) {
+GoRouter buildRouter({String? initialLocation}) {
   return GoRouter(
     initialLocation: initialLocation ?? '/',
     debugLogDiagnostics: kDebugMode,
@@ -30,7 +32,10 @@ GoRouter buildRouter({String? initialLocation, VoidCallback? onOpenSettings}) {
         path: '/',
         name: AppRoutes.directory,
         builder: (context, state) => BreedsPage(
-          onOpenSettings: onOpenSettings,
+          onOpenSettings: () => showSettingsSheet(
+            context,
+            cache: sl<BreedsCacheCubit>(),
+          ),
           onOpenBreed: (breed) => context.goNamed(
             AppRoutes.breed,
             pathParameters: {'name': breed.slug},

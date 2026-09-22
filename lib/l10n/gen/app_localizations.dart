@@ -575,7 +575,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsTestNotificationSent.
   ///
   /// In es, this message translates to:
-  /// **'Llega en unos segundos. Puedes salir de la app para verla.'**
+  /// **'Enviada. Tócala para abrir la ficha de la raza.'**
   String get settingsTestNotificationSent;
 
   /// No description provided for @settingsNotificationsDenied.
@@ -685,6 +685,18 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'No hay nada en {path}.'**
   String routeNotFoundMessage(String path);
+
+  /// No description provided for @settingsNoBreedsYet.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay razas guardadas. Abre el directorio con conexión y vuelve a intentarlo.'**
+  String get settingsNoBreedsYet;
+
+  /// No description provided for @settingsDailyBreedOn.
+  ///
+  /// In es, this message translates to:
+  /// **'Listo: la próxima raza del día ya está programada.'**
+  String get settingsDailyBreedOn;
 }
 
 class _AppLocalizationsDelegate

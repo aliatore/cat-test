@@ -37,6 +37,9 @@ class _ScriptedRepository implements BreedRepository {
   Future<Result<Breed>> findBySlug(String slug) => throw UnimplementedError();
 
   @override
+  List<Breed> cachedBreeds() => const [];
+
+  @override
   BreedsCacheInfo cacheInfo() => BreedsCacheInfo.empty;
 
   @override
