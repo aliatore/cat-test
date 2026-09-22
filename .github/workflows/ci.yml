@@ -59,12 +59,13 @@ jobs:
           channel: stable
           cache: true
 
-      - run: flutter build apk --release
+      - run: flutter build apk --release --flavor prod
 
       - uses: actions/upload-artifact@v5
         with:
           name: nekodex-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: build/app/outputs/flutter-apk/app-prod-release.apk
+          if-no-files-found: error
 
   ios:
     name: Build de iOS (sin firma)
@@ -80,4 +81,4 @@ jobs:
           channel: stable
           cache: true
 
-      - run: flutter build ios --release --no-codesign
+      - run: flutter build ios --release --no-codesign --flavor prod
