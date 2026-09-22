@@ -10,6 +10,10 @@ El proyecto se llama `cat_directory_app` (el `cat-directory-app` de la prueba, c
 ![Modo claro, ajustes y notificación](docs/screenshots/claro_y_ajustes.png)
 ![Sin red, sin datos y recuperación](docs/screenshots/sin_red.png)
 
+Las capturas son de un emulador Android 16; la misma app en el simulador de iOS (iPhone 17 Pro, iOS 26.3):
+
+![NekoDex en iOS](docs/screenshots/ios.png)
+
 ## Cómo ejecutarlo
 
 Requisitos: Flutter **3.41.9** (Dart 3.11). El repo trae `.fvmrc`, así que con [FVM](https://fvm.app) basta con:
@@ -76,20 +80,18 @@ Además de lo pedido: splash animado con Lottie, efectos de sonido, notificació
 Feature-first con las capas de Clean Architecture dentro de cada feature. El dominio no conoce Flutter, Dio ni Hive; las pantallas no conocen el contenedor de dependencias (los blocs se los pasa el router).
 
 ```mermaid
-flowchart LR
-  subgraph Presentación
-    P[Pages y widgets] --> B[BLoC / Cubit]
-  end
-  subgraph Dominio
-    B --> U[Casos de uso]
-    U --> R{{BreedRepository}}
-  end
-  subgraph Datos
-    I[BreedRepositoryImpl] -. implementa .-> R
-    I --> RD[Fuente remota · Dio + reintentos]
-    I --> LD[Fuente local · JsonCache sobre Hive]
-    I --> N[NetworkInfo]
-  end
+flowchart TB
+  UI["<b>Presentación</b><br/>páginas · widgets · BLoC / Cubit"]
+  DOM["<b>Dominio</b><br/>entidades · casos de uso · contratos de repositorio"]
+  DATA["<b>Datos</b><br/>BreedRepositoryImpl · DTOs · mappers"]
+  REM["Dio + RetryInterceptor"]
+  LOC["JsonCache sobre Hive CE"]
+  NET["NetworkInfo"]
+  UI --> DOM
+  DATA -- implementa --> DOM
+  DATA --> REM
+  DATA --> LOC
+  DATA --> NET
 ```
 
 ```
