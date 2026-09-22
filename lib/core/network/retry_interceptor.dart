@@ -27,6 +27,19 @@ class RetryAttempt {
 }
 
 typedef RetryListener = void Function(RetryAttempt attempt);
+
+/// Canal de difusion para que la UI se entere de los reintentos sin que la
+/// capa de datos sepa que existe una UI.
+class RetryEvents {
+  final _controller = StreamController<RetryAttempt>.broadcast();
+
+  Stream<RetryAttempt> get stream => _controller.stream;
+
+  void add(RetryAttempt attempt) => _controller.add(attempt);
+
+  Future<void> dispose() => _controller.close();
+}
+
 typedef Sleep = Future<void> Function(Duration duration);
 
 /// Reintenta fallos transitorios (sin red, timeouts, 5xx, 429) con backoff
