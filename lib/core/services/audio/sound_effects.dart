@@ -1,11 +1,11 @@
-/// Efectos disponibles. Los archivos estan en `assets/sfx/` y se generan con
+/// Efectos disponibles. Los MP3 estan en `assets/sfx/` y se generan con
 /// `tool/assets/sfx_gen.py`.
 enum Sfx {
-  boot('sfx/boot.wav', 0.8),
-  tap('sfx/tap.wav', 0.45),
-  meow('sfx/meow.wav', 0.8),
-  glitch('sfx/glitch.wav', 0.55),
-  success('sfx/success.wav', 0.55)
+  boot('sfx/boot.mp3', 0.8),
+  tap('sfx/tap.mp3', 0.45),
+  meow('sfx/meow.mp3', 0.8),
+  glitch('sfx/glitch.mp3', 0.55),
+  success('sfx/success.mp3', 0.55)
   ;
 
   const Sfx(this.asset, this.volume);

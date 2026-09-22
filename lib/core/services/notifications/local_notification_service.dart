@@ -5,7 +5,9 @@ import 'package:cat_directory_app/core/utils/log.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:timezone/data/latest_all.dart' as tz_data;
+// latest_10y y no latest_all: solo se programan fechas cercanas y la base
+// completa de zonas pesaba ~450 KB en el APK.
+import 'package:timezone/data/latest_10y.dart' as tz_data;
 import 'package:timezone/timezone.dart' as tz;
 
 class LocalNotificationService implements NotificationService {

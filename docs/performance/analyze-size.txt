@@ -1,0 +1,61 @@
+$ fvm flutter build apk --analyze-size --target-platform android-arm64
+
+✓ Built build/app/outputs/flutter-apk/app-release.apk (20.4MB)
+
+app-release.apk (total compressed)                                         19 MB
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  assets/
+    flutter_assets                                                        365 KB
+  classes.dex                                                             345 KB
+  classes2.dex                                                             91 KB
+  lib/
+    arm64-v8a                                                              18 MB
+    Dart AOT symbols accounted decompressed size                            7 MB
+      package:flutter                                                       3 MB
+      package:lottie                                                      360 KB
+      dart:mixin_deduplication                                            321 KB
+      dart:core                                                           300 KB
+      package:cat_directory_app                                           258 KB
+      dart:ui                                                             244 KB
+      dart:typed_data                                                     187 KB
+      package:flutter_localizations                                       164 KB
+      dart:async                                                          149 KB
+      dart:io                                                             133 KB
+      package:hive_ce                                                      97 KB
+      dart:collection                                                      81 KB
+      package:timezone                                                     80 KB
+      package:intl                                                         76 KB
+      dart:convert                                                         76 KB
+      package:material_color_utilities                                     71 KB
+      package:go_router                                                    70 KB
+      package:dio                                                          47 KB
+      package:source_span                                                  42 KB
+      package:archive                                                      40 KB
+    armeabi-v7a                                                            80 KB
+    x86_64                                                                114 KB
+  kotlin/
+    collections                                                             2 KB
+    concurrent                                                              1 KB
+    kotlin.kotlin_builtins                                                  5 KB
+    ranges                                                                  1 KB
+    reflect                                                                 1 KB
+  AndroidManifest.xml                                                       3 KB
+  res/
+    4Q.png                                                                  3 KB
+    9w.png                                                                  4 KB
+    BM.png                                                                 48 KB
+    CH.png                                                                 80 KB
+    FS.png                                                                 12 KB
+    LP.wav                                                                 78 KB
+    RJ.png                                                                 23 KB
+    XG.png                                                                  2 KB
+    bB.png                                                                  7 KB
+    fY.xml                                                                  1 KB
+    lf.png                                                                  4 KB
+    o-.png                                                                 35 KB
+    sN.png                                                                  8 KB
+    tP.png                                                                 24 KB
+    uG.png                                                                  6 KB
+    yi.png                                                                 14 KB
+    yn.png                                                                  7 KB
+  resources.arsc                                                           55 KB

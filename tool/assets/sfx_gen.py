@@ -3,15 +3,20 @@
 
     python3 tool/assets/sfx_gen.py
 
-WAV mono de 16 bit a 44.1 kHz en assets/sfx/. notify.wav se copia ademas como
-sonido nativo de notificacion (android res/raw e ios/Runner).
-Solo biblioteca estandar y semilla fija: la salida es reproducible.
+Se sintetizan en WAV mono de 16 bit a 44.1 kHz y los efectos de la app se
+guardan como MP3 en assets/sfx/ (con ffmpeg; en WAV pesaban 10 veces mas).
+notify solo va como WAV nativo de notificacion (android res/raw e ios/Runner),
+que es el formato que acepta iOS.
+Sintesis con la biblioteca estandar y semilla fija: la salida es reproducible.
 """
 
 import math
 import os
 import random
+import shutil
 import struct
+import subprocess
+import tempfile
 import wave
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -345,16 +350,27 @@ def write_wav(path, buf):
         w.writeframes(struct.pack('<%dh' % len(ints), *ints))
 
 
+def write_mp3(path, buf):
+    with tempfile.TemporaryDirectory() as tmp:
+        wav = os.path.join(tmp, 'sfx.wav')
+        write_wav(wav, buf)
+        subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-i', wav,
+                        '-codec:a', 'libmp3lame', '-b:a', '96k', path], check=True)
+
+
 def main():
+    if shutil.which('ffmpeg') is None:
+        raise SystemExit('hace falta ffmpeg (con libmp3lame) para los MP3')
+    os.makedirs(SFX_DIR, exist_ok=True)
     sounds = (('boot', boot), ('tap', tap), ('meow', meow), ('glitch', glitch),
               ('success', success), ('notify', notify))
     for name, build in sounds:
         buf = build()
-        targets = [os.path.join(SFX_DIR, name + '.wav')]
         if name == 'notify':
-            targets += NOTIFY_COPIES
-        for target in targets:
-            write_wav(target, buf)
+            for target in NOTIFY_COPIES:
+                write_wav(target, buf)
+        else:
+            write_mp3(os.path.join(SFX_DIR, name + '.mp3'), buf)
         peak = max(abs(v) for v in buf)
         rms = math.sqrt(sum(v * v for v in buf) / len(buf))
         print('%-8s %.3f s  pico %6.2f dBFS  rms %6.2f dBFS  dc %+.5f' % (
