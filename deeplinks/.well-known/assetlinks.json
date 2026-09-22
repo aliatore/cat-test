@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.luisturiz.cat_directory_app",
+      "sha256_cert_fingerprints": [
+        "C5:BE:70:78:4D:9E:1F:87:8A:23:B6:FE:5B:4D:05:4E:10:86:EF:B6:1F:D1:E5:4C:6C:F5:02:C5:CF:27:2A:C6"
+      ]
+    }
+  }
+]

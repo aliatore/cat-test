@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["Y6QAJXAGX6.com.luisturiz.catDirectoryApp"],
+        "components": [
+          {
+            "/": "/breed/*",
+            "comment": "Ficha de una raza del directorio"
+          }
+        ]
+      }
+    ]
+  }
+}
