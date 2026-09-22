@@ -5,6 +5,6 @@ DailyBreedCopy dailyBreedCopy(AppLocalizations l10n) => DailyBreedCopy(
   title: (breed) => l10n.notificationBreedTitle(breed.name),
   body: (breed) => l10n.notificationBreedBody(
     breed.country ?? l10n.unknownCountry,
-    (breed.coat ?? l10n.unknownValue).toLowerCase(),
+    breed.coat ?? l10n.unknownValue,
   ),
 );

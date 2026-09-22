@@ -76,7 +76,9 @@ class PaginationFooter extends StatelessWidget {
           ],
         ),
       );
-    } else if (state.isSearching && !state.hasReachedMax) {
+    } else if (state.isSearching &&
+        !state.hasReachedMax &&
+        state.visible.isNotEmpty) {
       child = Column(
         children: [
           Text(

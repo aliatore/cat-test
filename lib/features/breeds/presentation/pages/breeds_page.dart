@@ -250,6 +250,15 @@ class _BreedsPageState extends State<BreedsPage> {
           compact: true,
           title: l10n.emptySearchTitle(state.query),
           message: l10n.emptySearchMessage,
+          // Lo buscado puede estar en paginas que aun no se cargaron.
+          action: state.hasReachedMax
+              ? null
+              : NeonButton(
+                  label: l10n.searchLoadMore,
+                  icon: Icons.downloading_rounded,
+                  variant: NeonButtonVariant.outlined,
+                  onPressed: () => bloc.add(const BreedsNextPageRequested()),
+                ),
         ),
       );
     }
