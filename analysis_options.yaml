@@ -12,4 +12,6 @@ analyzer:
 linter:
   rules:
     public_member_api_docs: false
+    # los contratos de una sola operacion existen para poder cambiarlos en tests
+    one_member_abstracts: false
     sort_pub_dependencies: false
