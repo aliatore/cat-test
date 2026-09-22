@@ -24,11 +24,34 @@
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
               />
+            <meta-data
+                android:name="flutter_deeplinking_enabled"
+                android:value="true" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
 
+            <!-- Esquema propio para probar sin dominio:
+                 adb shell am start -d "nekodex://open/breed/abyssinian" -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="nekodex" android:host="open" />
+            </intent-filter>
+
+            <!-- App Links: https://<dominio>/breed/<raza>. El dominio publica
+                 /.well-known/assetlinks.json (ver deeplinks/ en el repo). -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" />
+                <data android:host="${deepLinkHost}" />
+                <data android:pathPrefix="/breed/" />
+            </intent-filter>
         </activity>
 
         <!-- Don't delete the meta-data below.

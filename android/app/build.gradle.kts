@@ -14,6 +14,9 @@ val keystoreProperties = Properties().apply {
     if (file.exists()) file.inputStream().use { load(it) }
 }
 
+// Dominio de los App Links. Se cambia con -PdeepLinkHost=mi-dominio.com
+val deepLinkHost = (project.findProperty("deepLinkHost") as String?) ?: "luisturiz.com"
+
 android {
     namespace = "com.luisturiz.cat_directory_app"
     compileSdk = flutter.compileSdkVersion
@@ -36,6 +39,7 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["deepLinkHost"] = deepLinkHost
     }
 
     signingConfigs {
