@@ -71,6 +71,8 @@ Los tres apuntan a `catfact.ninja` porque la API no tiene staging; la URL queda 
 - **Tareas** (`tasks.json`): código generado, traducciones, formato, análisis, pruebas y la secuencia completa de la CI; builds de APK, App Bundle, iOS e IPA que preguntan el ambiente; la traza de rendimiento; y abrir un deep link en Android o en el simulador eligiendo qué app lo recibe.
 - **Ajustes** (`settings.json`): formato y orden de imports al guardar, regla en 80 columnas y los `.freezed.dart` / `.g.dart` anidados bajo su archivo.
 
+Si pasas de un iPhone físico al simulador (o al revés) y la app se cierra al arrancar con `Failed to load dynamic library 'objective_c.framework'`, corre la tarea *Clean*: Flutter 3.41 guarda la librería nativa de `path_provider` en una sola carpeta para los dos destinos y reutiliza la del último build.
+
 ## Qué pedía la prueba y dónde está
 
 | Requisito | Cómo se resolvió |
@@ -92,7 +94,7 @@ Los tres apuntan a `catfact.ninja` porque la API no tiene staging; la URL queda 
 | Caché con invalidación explícita | Hive CE: TTL de 5 min, revalidación hasta 7 días, expiración, versión de esquema y purga al arrancar |
 | Accesibilidad | Etiquetas semánticas en lista, buscador y estados; pruebas con las guías de Flutter; árbol de accesibilidad revisado en Android con TalkBack |
 | Auditoría de performance | Traza en modo profile, PerformanceOverlay y `--analyze-size`, con el antes y el después ([abajo](#auditoría-de-performance)) |
-| **Plus:** deep links nativos | App Links y Universal Links con sus archivos de verificación en [`deeplinks/`](deeplinks/) + esquema propio `nekodex://` (`nekodex-dev://` y `nekodex-qa://` en los otros ambientes) |
+| **Plus:** deep links nativos | App Links y Universal Links verificados en `luisturiz.com` (archivos en [`deeplinks/`](deeplinks/)) + esquema propio `nekodex://` (`nekodex-dev://` y `nekodex-qa://` en los otros ambientes) |
 | **Plus:** dark mode | Sigue al sistema; también se puede fijar desde Ajustes |
 | **Plus:** Hero | Avatar de la fila → holograma de la ficha |
 | **Plus:** pruebas unitarias | 87 pruebas: repositorios, blocs, interceptor, caché, widgets, accesibilidad, rutas y ambientes |
@@ -292,11 +294,14 @@ Pendiente: recorrer la app con gestos de TalkBack en un teléfono físico (en el
 adb shell am start -a android.intent.action.VIEW -d "nekodex://open/breed/american-curl"
 xcrun simctl openurl booted "nekodex://open/breed/american-curl"
 
-# App Link / Universal Link
+# App Link / Universal Link: abre la app directo, sin navegador ni selector
 adb shell am start -a android.intent.action.VIEW -d "https://luisturiz.com/breed/american-curl"
+xcrun simctl openurl booted "https://luisturiz.com/breed/american-curl"
 ```
 
-La app declara `https://luisturiz.com/breed/*` (Android con `autoVerify` y iOS con *Associated Domains*). Los archivos `assetlinks.json` y `apple-app-site-association` están en [`deeplinks/.well-known/`](deeplinks/) con el paquete, el bundle id, el Team ID y la huella del certificado del APK publicado. Para que la verificación del sistema pase, esos dos archivos tienen que publicarse en el dominio (instrucciones en [`deeplinks/README.md`](deeplinks/README.md)); mientras tanto, los links `https` abren la app al elegirla y el esquema `nekodex://` funciona siempre. DEV y QA declaran el mismo dominio, pero los archivos solo incluyen el paquete y el bundle id de prod: los links `https` abren PROD, y DEV y QA se prueban con su esquema.
+La app declara `https://luisturiz.com/breed/*` (Android con `autoVerify` y iOS con *Associated Domains*). Los archivos de verificación están publicados en [`luisturiz.com/.well-known/assetlinks.json`](https://luisturiz.com/.well-known/assetlinks.json) y [`luisturiz.com/.well-known/apple-app-site-association`](https://luisturiz.com/.well-known/apple-app-site-association) (la fuente está en [`deeplinks/.well-known/`](deeplinks/)), con el paquete, el bundle id, el Team ID y la huella del certificado del APK de Releases. Los dos sistemas verifican el dominio: en Android `pm get-app-links` marca `luisturiz.com: verified` y en iOS la CDN de Apple ya sirve la asociación. Probado con la app cerrada en el emulador de Android y en el simulador de iOS: el link abre la ficha directo, sin pasar por el navegador.
+
+DEV y QA declaran el mismo dominio, pero los archivos solo incluyen el paquete y el bundle id de prod: los links `https` abren PROD, y DEV y QA se prueban con su esquema. El APK que genera la CI se firma con la clave de debug del runner, así que en ese APK el dominio no verifica; en el de Releases sí.
 
 ## Pruebas
 

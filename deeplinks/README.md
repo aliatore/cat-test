@@ -9,11 +9,17 @@ estos dos archivos en la raiz:
 | `.well-known/assetlinks.json` | `https://<dominio>/.well-known/assetlinks.json` | Android App Links |
 | `.well-known/apple-app-site-association` | `https://<dominio>/.well-known/apple-app-site-association` | iOS Universal Links |
 
+Estan publicados en `luisturiz.com` desde el repo del portafolio
+(`public/.well-known/`), y los dos sistemas ya verifican el dominio. Si cambian
+(otra huella, otro ambiente), hay que actualizar esa copia: es la que leen
+Android e iOS.
+
 Requisitos de los servidores:
 
 - HTTPS valido y **sin redirecciones** en esas dos rutas.
 - `Content-Type: application/json` (el de Apple no lleva extension, hay que
-  forzar el tipo; en S3 se hace con los metadatos del objeto).
+  forzar el tipo; en S3 se hace con los metadatos del objeto: el deploy del
+  portafolio lo sube con `aws s3 cp --content-type application/json`).
 
 ## Que contiene cada uno
 
@@ -46,7 +52,13 @@ todas sus configuraciones (lo usa `Runner.entitlements`:
 ## Como probar
 
 ```bash
-# Android: estado de la verificacion
+# Lo que ve Google (misma regla que usa Android)
+curl "https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://luisturiz.com&relation=delegate_permission/common.handle_all_urls"
+
+# Lo que ve Apple (los iPhone bajan el archivo de su CDN, no del dominio)
+curl https://app-site-association.cdn-apple.com/a/v1/luisturiz.com
+
+# Android: estado de la verificacion (debe decir luisturiz.com: verified)
 adb shell pm get-app-links com.luisturiz.cat_directory_app
 
 # Android: abrir un link (con o sin dominio verificado)
