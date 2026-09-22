@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cat_directory_app/app/di/injection.dart';
+import 'package:cat_directory_app/app/view/environment_banner.dart';
 import 'package:cat_directory_app/app/view/splash_overlay.dart';
 import 'package:cat_directory_app/core/config/app_environment.dart';
 import 'package:cat_directory_app/core/presentation/connectivity_cubit.dart';
@@ -118,7 +119,10 @@ class _NekoDexAppState extends State<NekoDexApp> {
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,
               routerConfig: widget.router,
-              builder: (context, child) => SplashOverlay(child: child!),
+              builder: (context, child) => EnvironmentBanner(
+                environment: widget.environment,
+                child: SplashOverlay(child: child!),
+              ),
             ),
           ),
         ),
