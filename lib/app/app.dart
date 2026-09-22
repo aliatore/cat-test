@@ -1,4 +1,5 @@
 import 'package:cat_directory_app/app/di/injection.dart';
+import 'package:cat_directory_app/app/view/splash_overlay.dart';
 import 'package:cat_directory_app/core/config/app_config.dart';
 import 'package:cat_directory_app/core/presentation/connectivity_cubit.dart';
 import 'package:cat_directory_app/core/services/audio/sound_effects.dart';
@@ -73,6 +74,7 @@ class _NekoDexAppState extends State<NekoDexApp> {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           routerConfig: widget.router,
+          builder: (context, child) => SplashOverlay(child: child!),
         ),
       ),
     );
