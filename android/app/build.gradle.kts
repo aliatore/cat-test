@@ -42,6 +42,31 @@ android {
         manifestPlaceholders["deepLinkHost"] = deepLinkHost
     }
 
+    // Un flavor por ambiente, instalables lado a lado. iOS repite estos valores
+    // en ios/Flutter/flavors y lo que usa Dart esta en AppEnvironment.
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            manifestPlaceholders["appName"] = "NekoDex DEV"
+            manifestPlaceholders["deepLinkScheme"] = "nekodex-dev"
+        }
+        create("qa") {
+            dimension = "env"
+            applicationIdSuffix = ".qa"
+            versionNameSuffix = "-qa"
+            manifestPlaceholders["appName"] = "NekoDex QA"
+            manifestPlaceholders["deepLinkScheme"] = "nekodex-qa"
+        }
+        create("prod") {
+            dimension = "env"
+            manifestPlaceholders["appName"] = "NekoDex"
+            manifestPlaceholders["deepLinkScheme"] = "nekodex"
+        }
+    }
+
     signingConfigs {
         if (keystoreProperties.isNotEmpty()) {
             create("release") {

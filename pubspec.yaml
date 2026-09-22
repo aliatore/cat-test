@@ -65,6 +65,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   generate: true
+  # Sin --flavor se compila prod (flutter run, build apk, CI).
+  default-flavor: prod
 
   assets:
     - assets/lottie/

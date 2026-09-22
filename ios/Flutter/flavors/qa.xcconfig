@@ -1,0 +1,5 @@
+// Ambiente QA. Android repite estos valores en
+// android/app/build.gradle.kts (productFlavors).
+APP_DISPLAY_NAME = NekoDex QA
+APP_ID_SUFFIX = .qa
+APP_URL_SCHEME = nekodex-qa

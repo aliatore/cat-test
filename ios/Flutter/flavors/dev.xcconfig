@@ -1,0 +1,5 @@
+// Ambiente DEV. Android repite estos valores en
+// android/app/build.gradle.kts (productFlavors).
+APP_DISPLAY_NAME = NekoDex DEV
+APP_ID_SUFFIX = .dev
+APP_URL_SCHEME = nekodex-dev
