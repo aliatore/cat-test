@@ -61,6 +61,10 @@ GoRouter buildRouter({String? initialLocation}) {
               final slug = state.pathParameters['name']!;
               final extra = state.extra;
               return MultiBlocProvider(
+                // Ir de una ficha a otra (deep link, notificacion) reutiliza
+                // la misma pagina: sin esta key los blocs de la raza anterior
+                // seguirian vivos y se veria la ficha equivocada.
+                key: ValueKey(slug),
                 providers: [
                   BlocProvider(
                     create: (_) {
