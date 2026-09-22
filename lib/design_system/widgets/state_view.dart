@@ -21,7 +21,7 @@ class StateView extends StatelessWidget {
   const StateView({
     required this.art,
     required this.title,
-    required this.message,
+    this.message,
     this.action,
     this.compact = false,
     super.key,
@@ -29,7 +29,7 @@ class StateView extends StatelessWidget {
 
   final StateArt art;
   final String title;
-  final String message;
+  final String? message;
   final Widget? action;
   final bool compact;
 
@@ -66,14 +66,16 @@ class StateView extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: theme.textTheme.headlineSmall,
                 ),
-                const SizedBox(height: 10),
-                Text(
-                  message,
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colors.textSecondary,
+                if (message != null) ...[
+                  const SizedBox(height: 10),
+                  Text(
+                    message!,
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                      color: colors.textSecondary,
+                    ),
                   ),
-                ),
+                ],
               ],
             ),
           ),
