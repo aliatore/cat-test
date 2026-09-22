@@ -1,4 +1,3 @@
-import 'dart:developer' as developer;
 import 'dart:math';
 
 import 'package:cat_directory_app/core/domain/data_origin.dart';
@@ -7,6 +6,7 @@ import 'package:cat_directory_app/core/error/failure_mapper.dart';
 import 'package:cat_directory_app/core/error/result.dart';
 import 'package:cat_directory_app/core/network/api_config.dart';
 import 'package:cat_directory_app/core/network/network_info.dart';
+import 'package:cat_directory_app/core/utils/log.dart';
 import 'package:cat_directory_app/features/facts/data/datasources/cat_fact_data_sources.dart';
 import 'package:cat_directory_app/features/facts/domain/entities/cat_fact.dart';
 import 'package:cat_directory_app/features/facts/domain/repositories/cat_fact_repository.dart';
@@ -62,7 +62,7 @@ class CatFactRepositoryImpl implements CatFactRepository {
     try {
       await _local.save(fact);
     } on Object catch (error) {
-      developer.log('no se pudo guardar el dato', error: error, name: 'cache');
+      logDebug('cache', 'no se pudo guardar el dato', error: error);
     }
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer' as developer;
 
 import 'package:cat_directory_app/core/cache/cache_policy.dart';
 import 'package:cat_directory_app/core/domain/data_origin.dart';
@@ -9,6 +8,7 @@ import 'package:cat_directory_app/core/error/result.dart';
 import 'package:cat_directory_app/core/network/api_config.dart';
 import 'package:cat_directory_app/core/network/network_info.dart';
 import 'package:cat_directory_app/core/utils/clock.dart';
+import 'package:cat_directory_app/core/utils/log.dart';
 import 'package:cat_directory_app/core/utils/slug.dart';
 import 'package:cat_directory_app/features/breeds/data/datasources/breed_local_data_source.dart';
 import 'package:cat_directory_app/features/breeds/data/datasources/breed_remote_data_source.dart';
@@ -198,11 +198,7 @@ class BreedRepositoryImpl implements BreedRepository {
     try {
       await _local.savePage(dto);
     } on Object catch (error) {
-      developer.log(
-        'no se pudo cachear la pagina',
-        error: error,
-        name: 'cache',
-      );
+      logDebug('cache', 'no se pudo cachear la pagina', error: error);
     }
   }
 

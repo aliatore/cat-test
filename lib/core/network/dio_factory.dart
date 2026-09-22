@@ -1,7 +1,6 @@
-import 'dart:developer' as developer;
-
 import 'package:cat_directory_app/core/network/api_config.dart';
 import 'package:cat_directory_app/core/network/retry_interceptor.dart';
+import 'package:cat_directory_app/core/utils/log.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
@@ -49,10 +48,10 @@ class _CompactLogInterceptor extends Interceptor {
     final ms = start == null
         ? '?'
         : DateTime.now().difference(start).inMilliseconds.toString();
-    developer.log(
+    logDebug(
+      'http',
       '${options.method} ${options.uri.path}?${options.uri.query} '
-      '-> $outcome (${ms}ms)',
-      name: 'http',
+          '-> $outcome (${ms}ms)',
     );
   }
 }
