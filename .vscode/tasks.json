@@ -1,0 +1,169 @@
+{
+  // Tareas del proyecto via FVM (la version de Flutter sale de .fvmrc).
+  // Las de build preguntan el ambiente; las salidas quedan en:
+  //   APK -> build/app/outputs/flutter-apk/app-<ambiente>-release.apk
+  //   AAB -> build/app/outputs/bundle/<ambiente>Release/
+  //   IPA -> build/ios/ipa/
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Setup: dependencias",
+      "type": "shell",
+      "command": "fvm flutter pub get",
+      "problemMatcher": []
+    },
+    {
+      "label": "Codegen: build_runner",
+      "detail": "freezed y json_serializable (el codigo generado se versiona)",
+      "type": "shell",
+      "command": "fvm dart run build_runner build --delete-conflicting-outputs",
+      "problemMatcher": []
+    },
+    {
+      "label": "Codegen: build_runner watch",
+      "detail": "Regenera al guardar mientras se tocan modelos",
+      "type": "shell",
+      "command": "fvm dart run build_runner watch --delete-conflicting-outputs",
+      "isBackground": true,
+      "problemMatcher": "$dart-build_runner"
+    },
+    {
+      "label": "L10n: traducciones",
+      "detail": "flutter gen-l10n desde lib/l10n/arb",
+      "type": "shell",
+      "command": "fvm flutter gen-l10n",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check: formato",
+      "detail": "Formatea y falla si algo cambio",
+      "type": "shell",
+      "command": "fvm dart format --set-exit-if-changed lib test integration_test test_driver",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check: analyze",
+      "type": "shell",
+      "command": "fvm flutter analyze",
+      "problemMatcher": []
+    },
+    {
+      "label": "Check: tests",
+      "type": "shell",
+      "command": "fvm flutter test",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Check: todo (como la CI)",
+      "detail": "Codigo generado, formato, analisis y pruebas",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Codegen: build_runner",
+        "L10n: traducciones",
+        "Check: formato",
+        "Check: analyze",
+        "Check: tests"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: cobertura",
+      "detail": "Deja coverage/lcov.info",
+      "type": "shell",
+      "command": "fvm flutter test --coverage",
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: APK release",
+      "type": "shell",
+      "command": "fvm flutter build apk --release --flavor ${input:flavor}",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: App Bundle release",
+      "type": "shell",
+      "command": "fvm flutter build appbundle --release --flavor ${input:flavor}",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: iOS release sin firma",
+      "detail": "Igual que la CI: compila sin certificados",
+      "type": "shell",
+      "command": "fvm flutter build ios --release --no-codesign --flavor ${input:flavor}",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: IPA",
+      "detail": "Firma con el equipo configurado en Xcode",
+      "type": "shell",
+      "command": "fvm flutter build ipa --release --flavor ${input:flavor}",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Perf: traza de scroll",
+      "detail": "Modo profile en un dispositivo; escribe docs/performance/scroll_timeline.*",
+      "type": "shell",
+      "command": "fvm flutter drive --profile --no-dds --flavor prod --driver=test_driver/perf_driver.dart --target=integration_test/scroll_performance_test.dart",
+      "problemMatcher": []
+    },
+    {
+      "label": "Perf: tamano del APK",
+      "detail": "analyze-size de prod para arm64",
+      "type": "shell",
+      "command": "fvm flutter build apk --release --flavor prod --analyze-size --target-platform android-arm64",
+      "problemMatcher": []
+    },
+    {
+      "label": "Deep link: Android",
+      "detail": "Abre una ficha en el emulador o telefono conectado",
+      "type": "shell",
+      "command": "adb shell am start -W -a android.intent.action.VIEW -d \"${input:scheme}://open/breed/${input:breed}\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "Deep link: simulador iOS",
+      "detail": "Abre una ficha en el simulador encendido",
+      "type": "shell",
+      "command": "xcrun simctl openurl booted \"${input:scheme}://open/breed/${input:breed}\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "fvm flutter clean && fvm flutter pub get",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "flavor",
+      "type": "pickString",
+      "description": "Ambiente",
+      "options": ["dev", "qa", "prod"],
+      "default": "dev"
+    },
+    {
+      "id": "scheme",
+      "type": "pickString",
+      "description": "App que abre el link",
+      "options": [
+        { "label": "NekoDex DEV", "value": "nekodex-dev" },
+        { "label": "NekoDex QA", "value": "nekodex-qa" },
+        { "label": "NekoDex (prod)", "value": "nekodex" }
+      ],
+      "default": "nekodex-dev"
+    },
+    {
+      "id": "breed",
+      "type": "promptString",
+      "description": "Raza (como en /breed/<raza>)",
+      "default": "bengal"
+    }
+  ]
+}

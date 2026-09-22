@@ -1,0 +1,39 @@
+{
+  // El SDK de FVM (.fvmrc); `fvm use` actualiza esta ruta si cambia la version.
+  "dart.flutterSdkPath": ".fvm/versions/3.41.9",
+
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [80],
+    "editor.selectionHighlight": false,
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": "off",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+
+  // Los .freezed.dart y .g.dart se ven debajo de su archivo fuente.
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.dart": "${capture}.freezed.dart, ${capture}.g.dart",
+    "pubspec.yaml": "pubspec.lock, analysis_options.yaml, build.yaml, l10n.yaml, .fvmrc, flutter_launcher_icons.yaml, flutter_native_splash.yaml"
+  },
+
+  "files.associations": {
+    "*.arb": "json",
+    "apple-app-site-association": "json"
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true,
+    "**/build": true
+  },
+  "search.exclude": {
+    "**/.fvm": true,
+    "**/build": true,
+    "coverage": true
+  }
+}

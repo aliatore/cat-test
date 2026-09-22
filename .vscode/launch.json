@@ -1,0 +1,120 @@
+{
+  // Configuraciones de depuracion por ambiente.
+  //
+  // Cada una pasa --flavor: el flavor define el id y el nombre de la app
+  // (productFlavors en Android, scheme dev/qa/prod en iOS) y, en Dart,
+  // AppEnvironment (lib/core/config/app_environment.dart). Sin --flavor se
+  // compila prod (default-flavor en pubspec.yaml).
+  //
+  // profile y release en iOS solo corren en un iPhone fisico; en Android
+  // sirven tambien en el emulador.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "NekoDex DEV",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "dev"],
+      // El Run | Debug que aparece sobre main() usa DEV; QA y PROD suman
+      // su propio link al lado.
+      "templateFor": "lib",
+      "presentation": { "group": "1-dev", "order": 1 }
+    },
+    {
+      "name": "NekoDex DEV (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "dev"],
+      "presentation": { "group": "1-dev", "order": 2 }
+    },
+    {
+      "name": "NekoDex DEV (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "dev"],
+      "presentation": { "group": "1-dev", "order": 3 }
+    },
+    {
+      "name": "NekoDex QA",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "qa"],
+      "codeLens": {
+        "for": ["debug-file"],
+        "path": "lib/main.dart",
+        "title": "Debug QA"
+      },
+      "presentation": { "group": "2-qa", "order": 1 }
+    },
+    {
+      "name": "NekoDex QA (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "qa"],
+      "presentation": { "group": "2-qa", "order": 2 }
+    },
+    {
+      "name": "NekoDex QA (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "qa"],
+      "presentation": { "group": "2-qa", "order": 3 }
+    },
+    {
+      "name": "NekoDex PROD",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "prod"],
+      "codeLens": {
+        "for": ["debug-file"],
+        "path": "lib/main.dart",
+        "title": "Debug PROD"
+      },
+      "presentation": { "group": "3-prod", "order": 1 }
+    },
+    {
+      "name": "NekoDex PROD (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "prod"],
+      "presentation": { "group": "3-prod", "order": 2 }
+    },
+    {
+      "name": "NekoDex PROD (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "program": "lib/main.dart",
+      "toolArgs": ["--flavor", "prod"],
+      "presentation": { "group": "3-prod", "order": 3 }
+    },
+    {
+      "name": "Tests",
+      "request": "launch",
+      "type": "dart",
+      "program": "test/",
+      "presentation": { "group": "4-otros", "order": 1 }
+    },
+    {
+      // Para depurar un arranque en frio (deep link o notificacion): abrir la
+      // app desde el link y despues adjuntarse.
+      "name": "Adjuntar a la app abierta",
+      "request": "attach",
+      "type": "dart",
+      "presentation": { "group": "4-otros", "order": 2 }
+    }
+  ]
+}
