@@ -30,7 +30,7 @@ def y(ms):
 
 
 out = [
-    f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" font-family="ui-monospace, Menlo, monospace">',
+    f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" font-family="ui-monospace, Menlo, monospace">',
     f'<rect width="{W}" height="{H}" fill="#07060F"/>',
     f'<text x="{left}" y="24" fill="#ECEAFB" font-size="15">{title} — {n} frames (profile, emulador Android 16)</text>',
 ]

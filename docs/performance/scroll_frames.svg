@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" font-family="ui-monospace, Menlo, monospace">
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" font-family="ui-monospace, Menlo, monospace">
 <rect width="960" height="360" fill="#07060F"/>
 <text x="56" y="24" fill="#ECEAFB" font-size="15">Después: fondo y avatares pre-rasterizados — 206 frames (profile, emulador Android 16)</text>
 <line x1="56" x2="940" y1="310.0" y2="310.0" stroke="#2B2653" stroke-width="1"/>
