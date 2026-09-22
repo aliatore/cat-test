@@ -1,0 +1,11 @@
+# Splash nativo: solo el fondo. El gato lo dibuja el splash animado de Flutter
+# encima, asi no hay un logo estatico que desaparezca y vuelva a aparecer.
+flutter_native_splash:
+  color: "#07060F"
+  android_12:
+    color: "#07060F"
+    # Android 12+ siempre muestra un icono; uno transparente deja solo el fondo.
+    image: tool/branding/out/splash_transparent.png
+  ios: true
+  android: true
+  web: false

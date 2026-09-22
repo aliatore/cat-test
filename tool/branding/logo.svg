@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  NekoDex - logo (cabeza de gato neon). Geometria canonica en un lienzo de 512x512,
+  identica a la que dibuja la app en codigo y a la de las animaciones Lottie.
+  El brillo usa feGaussianBlur: pensado para rasterizarse offline (iconos y splash).
+  Clases nk-* para poder variar el estilo (p. ej. version monocroma sin brillo).
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <title>NekoDex</title>
+  <defs>
+    <filter id="nk-glow" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512"
+            color-interpolation-filters="sRGB">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="13" result="halo"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="4.5" result="bloom"/>
+      <feMerge>
+        <feMergeNode in="halo"/>
+        <feMergeNode in="halo"/>
+        <feMergeNode in="bloom"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Tubos de color (con brillo) -->
+  <g class="nk-tubes" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#nk-glow)">
+    <polygon class="nk-outline" stroke="#FF2E88" stroke-width="9"
+             points="136,96 206,172 256,166 306,172 376,96 390,208 414,290 358,370 256,406 154,370 98,290 122,208"/>
+    <path class="nk-ears" stroke="#9D4EDD" stroke-width="7"
+          d="M137,186 L144,124 L183,166 M375,186 L368,124 L329,166"/>
+    <polyline class="nk-chevron" stroke="#FCEE0A" stroke-width="7" points="238,196 256,212 274,196"/>
+    <path class="nk-whiskers" stroke="#00F0FF" stroke-width="6"
+          d="M196,326 L84,310 M198,338 L78,342 M200,350 L90,376 M316,326 L428,310 M314,338 L434,342 M312,350 L422,376"/>
+    <path class="nk-mouth" stroke="#00F0FF" stroke-width="6" d="M256,330 L256,340 M256,340 L240,352 M256,340 L272,352"/>
+    <path class="nk-eyes" stroke="#00F0FF" stroke-width="7" fill="#00F0FF" fill-opacity="0.22"
+          d="M164,262 L222,244 L236,270 L182,288 Z M348,262 L290,244 L276,270 L330,288 Z"/>
+    <path class="nk-pupils" stroke="#FCEE0A" stroke-width="3" fill="#FCEE0A"
+          d="M203,248 L209,266 L203,284 L197,266 Z M309,248 L315,266 L309,284 L303,266 Z"/>
+    <polygon class="nk-nose" stroke="#FCEE0A" stroke-width="5" fill="#FCEE0A" points="242,314 270,314 256,330"/>
+  </g>
+
+  <!-- Nucleos claros encima (sin brillo): el "filamento" del neon -->
+  <g class="nk-cores" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <polygon stroke="#FFD2E6" stroke-width="3"
+             points="136,96 206,172 256,166 306,172 376,96 390,208 414,290 358,370 256,406 154,370 98,290 122,208"/>
+    <path stroke="#E7D5FF" stroke-width="2.2" d="M137,186 L144,124 L183,166 M375,186 L368,124 L329,166"/>
+    <polyline stroke="#FFFBC8" stroke-width="2.2" points="238,196 256,212 274,196"/>
+    <path stroke="#D6FDFF" stroke-width="2"
+          d="M196,326 L84,310 M198,338 L78,342 M200,350 L90,376 M316,326 L428,310 M314,338 L434,342 M312,350 L422,376 M256,330 L256,340 M256,340 L240,352 M256,340 L272,352"/>
+    <path stroke="#D6FDFF" stroke-width="2.2"
+          d="M164,262 L222,244 L236,270 L182,288 Z M348,262 L290,244 L276,270 L330,288 Z"/>
+  </g>
+</svg>
