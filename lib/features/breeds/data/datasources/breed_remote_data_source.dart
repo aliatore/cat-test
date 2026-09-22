@@ -19,10 +19,14 @@ class DioBreedRemoteDataSource implements BreedRemoteDataSource {
     // Si ya hay una peticion identica en curso se comparte su resultado: el
     // bloc evita duplicados en la lista, esto los evita en la red (por
     // ejemplo, un deep link resolviendo la misma pagina que el directorio).
-    return _inFlight[key] ??= _get(
-      page,
-      limit,
-    ).whenComplete(() => _inFlight.remove(key));
+    final pending = _inFlight[key];
+    if (pending != null) return pending;
+
+    final request = _get(page, limit);
+    _inFlight[key] = request;
+    // Solo limpia el mapa; el resultado y los errores los recibe quien llama.
+    request.whenComplete(() => _inFlight.remove(key)).ignore();
+    return request;
   }
 
   Future<BreedsPageDto> _get(int page, int limit) async {
