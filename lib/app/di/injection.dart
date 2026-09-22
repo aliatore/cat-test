@@ -43,7 +43,10 @@ Future<void> configureDependencies() async {
   sl
     ..registerSingleton<RetryEvents>(retryEvents)
     ..registerSingleton(buildDio(onRetry: retryEvents.add))
-    ..registerSingleton<NetworkInfo>(ConnectivityNetworkInfo(Connectivity()))
+    ..registerSingleton<NetworkInfo>(
+      ConnectivityNetworkInfo(Connectivity()),
+      dispose: (info) => (info as ConnectivityNetworkInfo).dispose(),
+    )
     ..registerSingleton(
       JsonCache(HiveKeyValueStore(cacheBox), schemaVersion: cacheSchemaVersion),
     )
