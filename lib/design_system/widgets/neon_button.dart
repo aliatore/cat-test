@@ -89,36 +89,41 @@ class _NeonButtonState extends State<NeonButton> {
       ),
     );
 
-    return AnimatedScale(
-      scale: _pressed ? 0.97 : 1,
-      duration: Motion.fast,
-      curve: Motion.enter,
-      child: DecoratedBox(
-        decoration: ShapeDecoration(
-          shape: shape,
-          shadows: filled && enabled
-              ? [
-                  BoxShadow(
-                    color: accent.withValues(alpha: 0.45 * colors.glow),
-                    blurRadius: 18,
-                    spreadRadius: -4,
-                  ),
-                ]
-              : null,
-        ),
-        child: Material(
-          color: filled
-              ? accent.withValues(alpha: enabled ? 1 : 0.25)
-              : Colors.transparent,
-          shape: shape,
-          clipBehavior: Clip.antiAlias,
-          child: InkWell(
-            customBorder: shape,
-            onTap: enabled ? _handleTap : null,
-            onHighlightChanged: (value) => setState(() => _pressed = value),
-            splashColor: foreground.withValues(alpha: 0.16),
-            highlightColor: foreground.withValues(alpha: 0.08),
-            child: content,
+    return Semantics(
+      button: true,
+      enabled: enabled,
+      child: AnimatedScale(
+        scale: _pressed ? 0.97 : 1,
+        duration: Motion.fast,
+        curve: Motion.enter,
+        child: DecoratedBox(
+          decoration: ShapeDecoration(
+            shape: shape,
+            shadows: filled && enabled
+                ? [
+                    BoxShadow(
+                      color: accent.withValues(alpha: 0.45 * colors.glow),
+                      blurRadius: 18,
+                      spreadRadius: -4,
+                    ),
+                  ]
+                : null,
+          ),
+          child: Material(
+            type: MaterialType.button,
+            color: filled
+                ? accent.withValues(alpha: enabled ? 1 : 0.25)
+                : Colors.transparent,
+            shape: shape,
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              customBorder: shape,
+              onTap: enabled ? _handleTap : null,
+              onHighlightChanged: (value) => setState(() => _pressed = value),
+              splashColor: foreground.withValues(alpha: 0.16),
+              highlightColor: foreground.withValues(alpha: 0.08),
+              child: content,
+            ),
           ),
         ),
       ),

@@ -53,9 +53,12 @@ class BreedTile extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
+      // excludeSemantics tambien descarta el onTap del InkWell de adentro:
+      // la accion se declara aqui para que TalkBack/VoiceOver puedan activarla.
       child: Semantics(
         button: true,
         label: l10n.breedTileSemantics(breed.name, country),
+        onTap: onTap,
         onTapHint: l10n.breedTileHint,
         excludeSemantics: true,
         child: NeonPanel(

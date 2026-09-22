@@ -65,6 +65,7 @@ class _BreedHologramState extends State<BreedHologram>
     return Semantics(
       button: true,
       label: l10n.detailAvatarSemantics(widget.breed.name),
+      onTap: _pet,
       onTapHint: l10n.detailPetHint,
       excludeSemantics: true,
       child: GestureDetector(
