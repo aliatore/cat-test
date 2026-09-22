@@ -1,25 +1,74 @@
+import 'dart:ui' as ui;
+
 import 'package:cat_directory_app/design_system/theme/neko_colors.dart';
 import 'package:flutter/material.dart';
 
 /// Fondo estatico: degradado, halos y una reticula en perspectiva.
 ///
-/// Se pinta una sola vez y queda aislado en su propia capa, asi que el
-/// scroll de la lista nunca lo repinta.
-class CyberBackground extends StatelessWidget {
+/// Con Impeller no hay raster cache: un RepaintBoundary evita volver a grabar
+/// el dibujo, pero la GPU lo vuelve a pintar en cada frame del scroll
+/// (degradados a pantalla completa y cientos de lineas). Por eso se rasteriza
+/// una sola vez a una textura y cada frame solo compone esa imagen.
+class CyberBackground extends StatefulWidget {
   const CyberBackground({this.child, super.key});
 
   final Widget? child;
 
   @override
+  State<CyberBackground> createState() => _CyberBackgroundState();
+}
+
+class _CyberBackgroundState extends State<CyberBackground> {
+  ui.Image? _image;
+  (Size, double, NekoColors)? _imageKey;
+
+  ui.Image _imageFor(Size size, double pixelRatio, NekoColors colors) {
+    final key = (size, pixelRatio, colors);
+    final cached = _image;
+    if (cached != null && _imageKey == key) return cached;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder)..scale(pixelRatio);
+    _BackgroundPainter(colors).paint(canvas, size);
+    final picture = recorder.endRecording();
+    final image = picture.toImageSync(
+      (size.width * pixelRatio).ceil(),
+      (size.height * pixelRatio).ceil(),
+    );
+    picture.dispose();
+
+    cached?.dispose();
+    _image = image;
+    _imageKey = key;
+    return image;
+  }
+
+  @override
+  void dispose() {
+    _image?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final colors = context.neko;
+    final pixelRatio = MediaQuery.devicePixelRatioOf(context);
     return Stack(
       fit: StackFit.expand,
       children: [
-        RepaintBoundary(
-          child: CustomPaint(painter: _BackgroundPainter(colors)),
+        LayoutBuilder(
+          builder: (context, constraints) {
+            final size = constraints.biggest;
+            if (size.isEmpty || !size.isFinite) return const SizedBox.shrink();
+            return RawImage(
+              image: _imageFor(size, pixelRatio, colors),
+              width: size.width,
+              height: size.height,
+              fit: BoxFit.fill,
+            );
+          },
         ),
-        ?child,
+        ?widget.child,
       ],
     );
   }

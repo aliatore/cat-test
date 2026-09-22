@@ -1,3 +1,5 @@
+import 'dart:ui' as ui;
+
 import 'package:cat_directory_app/design_system/theme/neko_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -96,17 +98,25 @@ class CatAvatarSpec {
 
 /// Avatar de neon generado por codigo: cada raza tiene el suyo, siempre el
 /// mismo, sin descargar una sola imagen.
+///
+/// En la lista se usa [rasterize]: el dibujo se convierte en textura una vez
+/// y se reutiliza (Impeller no tiene raster cache, y sin esto la GPU
+/// volveria a trazar una docena de caminos por fila en cada frame del
+/// scroll). En el detalle se dibuja en vectorial para que el Hero escale
+/// sin perder nitidez.
 class CatAvatar extends StatelessWidget {
   const CatAvatar({
     required this.spec,
     this.size = 52,
     this.glow = true,
+    this.rasterize = false,
     super.key,
   });
 
   final CatAvatarSpec spec;
   final double size;
   final bool glow;
+  final bool rasterize;
 
   @override
   Widget build(BuildContext context) {
@@ -116,19 +126,70 @@ class CatAvatar extends StatelessWidget {
     var eyes = accents[(spec.seed ~/ 7) % accents.length];
     if (eyes == accent) eyes = accents[(spec.seed + 2) % accents.length];
 
-    return RepaintBoundary(
-      child: CustomPaint(
-        size: Size.square(size),
-        painter: CatAvatarPainter(
-          spec: spec,
-          accent: accent,
-          eyes: eyes,
-          nose: accent == colors.yellow ? colors.magenta : colors.yellow,
-          pupil: colors.background,
-          glow: glow ? colors.glow : 0,
-        ),
-      ),
+    final painter = CatAvatarPainter(
+      spec: spec,
+      accent: accent,
+      eyes: eyes,
+      nose: accent == colors.yellow ? colors.magenta : colors.yellow,
+      pupil: colors.background,
+      glow: glow ? colors.glow : 0,
     );
+
+    if (rasterize) {
+      return RawImage(
+        image: _AvatarRasterCache.instance.resolve(
+          painter,
+          size,
+          MediaQuery.devicePixelRatioOf(context),
+        ),
+        width: size,
+        height: size,
+      );
+    }
+    return RepaintBoundary(
+      child: CustomPaint(size: Size.square(size), painter: painter),
+    );
+  }
+}
+
+/// LRU de avatares ya rasterizados. 98 razas a 50 dp caben de sobra, pero se
+/// limita para no crecer sin control si cambian tema o densidad.
+class _AvatarRasterCache {
+  _AvatarRasterCache._();
+
+  static final instance = _AvatarRasterCache._();
+  static const _capacity = 120;
+
+  final _images = <Object, ui.Image>{};
+
+  ui.Image resolve(CatAvatarPainter painter, double size, double pixelRatio) {
+    final key = (
+      painter.spec,
+      painter.accent,
+      painter.eyes,
+      painter.nose,
+      painter.pupil,
+      painter.glow,
+      size,
+      pixelRatio,
+    );
+    final hit = _images.remove(key);
+    if (hit != null) return _images[key] = hit;
+
+    final recorder = ui.PictureRecorder();
+    final canvas = Canvas(recorder)..scale(pixelRatio);
+    painter.paint(canvas, Size.square(size));
+    final picture = recorder.endRecording();
+    final pixels = (size * pixelRatio).ceil();
+    final image = picture.toImageSync(pixels, pixels);
+    picture.dispose();
+
+    _images[key] = image;
+    if (_images.length > _capacity) {
+      // RawImage trabaja con un clon, asi que liberar aqui es seguro.
+      _images.remove(_images.keys.first)?.dispose();
+    }
+    return image;
   }
 }
 

@@ -48,7 +48,11 @@ class BreedTile extends StatelessWidget {
     final theme = Theme.of(context);
     final country = breed.country ?? l10n.unknownCountry;
 
-    Widget avatar = CatAvatar(spec: avatarSpecFor(breed), size: 50);
+    Widget avatar = CatAvatar(
+      spec: avatarSpecFor(breed),
+      size: 50,
+      rasterize: true,
+    );
     if (hero) avatar = Hero(tag: breedHeroTag(breed), child: avatar);
 
     return Padding(
