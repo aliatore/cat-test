@@ -21,10 +21,10 @@ Requisitos: Flutter **3.41.9** (Dart 3.11). El repo trae `.fvmrc`, así que con 
 ```bash
 fvm install
 fvm flutter pub get
-fvm flutter run
+fvm flutter run --flavor dev    # o qa / prod; sin --flavor compila prod
 ```
 
-Sin FVM funciona igual con un Flutter 3.41.x en el `PATH` (`flutter pub get && flutter run`). El código generado (freezed, json_serializable, traducciones) está versionado, así que no hace falta correr `build_runner` para compilar. Si se cambian modelos:
+Sin FVM funciona igual con un Flutter 3.41.x en el `PATH` (`flutter pub get && flutter run --flavor dev`). El código generado (freezed, json_serializable, traducciones) está versionado, así que no hace falta correr `build_runner` para compilar. Si se cambian modelos:
 
 ```bash
 fvm dart run build_runner build --delete-conflicting-outputs
@@ -33,17 +33,43 @@ fvm dart run build_runner build --delete-conflicting-outputs
 Pruebas:
 
 ```bash
-fvm flutter test                    # 79 pruebas unitarias y de widgets
+fvm flutter test                    # 87 pruebas unitarias y de widgets
 fvm flutter test --coverage         # 66 % del código propio (sin generado)
 ```
 
 Auditoría de scroll (necesita un dispositivo o emulador, en modo profile):
 
 ```bash
-fvm flutter drive --profile --no-dds \
+fvm flutter drive --profile --no-dds --flavor prod \
   --driver=test_driver/perf_driver.dart \
   --target=integration_test/scroll_performance_test.dart
 ```
+
+### Ambientes: DEV, QA y PROD
+
+Cada ambiente es un flavor nativo (`productFlavors` en Android, un scheme de Xcode en iOS), así que las tres apps se instalan lado a lado. En Dart, `AppEnvironment` sale del flavor (`appFlavor`) y reúne lo que cambia en el código.
+
+| | DEV | QA | PROD |
+|---|---|---|---|
+| Nombre | NekoDex DEV | NekoDex QA | NekoDex |
+| Android (`applicationId`) | `com.luisturiz.cat_directory_app.dev` | `….qa` | `com.luisturiz.cat_directory_app` |
+| iOS (bundle id) | `com.luisturiz.catDirectoryApp.dev` | `….qa` | `com.luisturiz.catDirectoryApp` |
+| Esquema de deep links | `nekodex-dev://` | `nekodex-qa://` | `nekodex://` |
+| Revalidar al volver después de | 30 s | 1 min | 5 min |
+| Logs de red en consola (debug) | sí | sí | no |
+| Cinta en la esquina | cian | amarilla | — |
+
+![DEV, QA y PROD instaladas a la vez](docs/screenshots/ambientes.png)
+
+Los tres apuntan a `catfact.ninja` porque la API no tiene staging; la URL queda por ambiente para cuando exista. Sin `--flavor` se compila prod (`default-flavor` en `pubspec.yaml`), así que `flutter build apk` sigue dando el APK de producción. Los valores nativos están en `android/app/build.gradle.kts` e `ios/Flutter/flavors/`, y una prueba verifica que cada ambiente de Dart exista en las dos plataformas.
+
+### VS Code
+
+`.vscode/` trae la configuración lista y usa el SDK de FVM:
+
+- **Depurar** (`launch.json`): NekoDex DEV, QA y PROD en modo debug, profile y release, las pruebas y *Adjuntar a la app abierta* para depurar un arranque desde un deep link o una notificación. Sobre `main()` aparecen *Debug* (DEV), *Debug QA* y *Debug PROD*.
+- **Tareas** (`tasks.json`): código generado, traducciones, formato, análisis, pruebas y la secuencia completa de la CI; builds de APK, App Bundle, iOS e IPA que preguntan el ambiente; la traza de rendimiento; y abrir un deep link en Android o en el simulador eligiendo qué app lo recibe.
+- **Ajustes** (`settings.json`): formato y orden de imports al guardar, regla en 80 columnas y los `.freezed.dart` / `.g.dart` anidados bajo su archivo.
 
 ## Qué pedía la prueba y dónde está
 
@@ -66,14 +92,14 @@ fvm flutter drive --profile --no-dds \
 | Caché con invalidación explícita | Hive CE: TTL de 5 min, revalidación hasta 7 días, expiración, versión de esquema y purga al arrancar |
 | Accesibilidad | Etiquetas semánticas en lista, buscador y estados; pruebas con las guías de Flutter; árbol de accesibilidad revisado en Android con TalkBack |
 | Auditoría de performance | Traza en modo profile, PerformanceOverlay y `--analyze-size`, con el antes y el después ([abajo](#auditoría-de-performance)) |
-| **Plus:** deep links nativos | App Links y Universal Links con sus archivos de verificación en [`deeplinks/`](deeplinks/) + esquema propio `nekodex://` |
+| **Plus:** deep links nativos | App Links y Universal Links con sus archivos de verificación en [`deeplinks/`](deeplinks/) + esquema propio `nekodex://` (`nekodex-dev://` y `nekodex-qa://` en los otros ambientes) |
 | **Plus:** dark mode | Sigue al sistema; también se puede fijar desde Ajustes |
 | **Plus:** Hero | Avatar de la fila → holograma de la ficha |
-| **Plus:** pruebas unitarias | 79 pruebas: repositorios, blocs, interceptor, caché, widgets, accesibilidad y rutas |
-| **Plus:** revalidar al volver a primer plano | `AppLifecycleListener`: tras 5 min en segundo plano se revalida la caché |
+| **Plus:** pruebas unitarias | 87 pruebas: repositorios, blocs, interceptor, caché, widgets, accesibilidad, rutas y ambientes |
+| **Plus:** revalidar al volver a primer plano | `AppLifecycleListener`: tras 5 min en segundo plano se revalida la caché (30 s en DEV y 1 min en QA) |
 | **Plus:** APK en releases | Sí |
 
-Además de lo pedido: splash animado con Lottie, efectos de sonido, notificación local diaria ("raza del día"), español e inglés, y avatares generados por código para cada raza.
+Además de lo pedido: splash animado con Lottie, efectos de sonido, notificación local diaria ("raza del día"), español e inglés, avatares generados por código para cada raza y tres ambientes (DEV, QA y PROD) listos para depurar desde VS Code.
 
 ## Arquitectura
 
@@ -262,7 +288,7 @@ Pendiente: recorrer la app con gestos de TalkBack en un teléfono físico (en el
 ## Deep links
 
 ```bash
-# Esquema propio, funciona en cualquier instalación
+# Esquema propio, funciona en cualquier instalación (nekodex-dev:// y nekodex-qa:// abren DEV y QA)
 adb shell am start -a android.intent.action.VIEW -d "nekodex://open/breed/american-curl"
 xcrun simctl openurl booted "nekodex://open/breed/american-curl"
 
@@ -270,7 +296,7 @@ xcrun simctl openurl booted "nekodex://open/breed/american-curl"
 adb shell am start -a android.intent.action.VIEW -d "https://luisturiz.com/breed/american-curl"
 ```
 
-La app declara `https://luisturiz.com/breed/*` (Android con `autoVerify` y iOS con *Associated Domains*). Los archivos `assetlinks.json` y `apple-app-site-association` están en [`deeplinks/.well-known/`](deeplinks/) con el paquete, el bundle id, el Team ID y la huella del certificado del APK publicado. Para que la verificación del sistema pase, esos dos archivos tienen que publicarse en el dominio (instrucciones en [`deeplinks/README.md`](deeplinks/README.md)); mientras tanto, los links `https` abren la app al elegirla y el esquema `nekodex://` funciona siempre.
+La app declara `https://luisturiz.com/breed/*` (Android con `autoVerify` y iOS con *Associated Domains*). Los archivos `assetlinks.json` y `apple-app-site-association` están en [`deeplinks/.well-known/`](deeplinks/) con el paquete, el bundle id, el Team ID y la huella del certificado del APK publicado. Para que la verificación del sistema pase, esos dos archivos tienen que publicarse en el dominio (instrucciones en [`deeplinks/README.md`](deeplinks/README.md)); mientras tanto, los links `https` abren la app al elegirla y el esquema `nekodex://` funciona siempre. DEV y QA declaran el mismo dominio, pero los archivos solo incluyen el paquete y el bundle id de prod: los links `https` abren PROD, y DEV y QA se prueban con su esquema.
 
 ## Pruebas
 
@@ -278,13 +304,15 @@ La app declara `https://luisturiz.com/breed/*` (Android con `autoVerify` y iOS c
 - **Red:** reintentos, crecimiento exponencial, `Retry-After`, límite de intentos, métodos no idempotentes.
 - **Blocs:** arranque con caché y luego red, errores bloqueantes vs. avisos, paginación sin duplicados, página lenta después de un refresh, búsqueda con debounce, reintento al volver la conexión, dato curioso.
 - **Widgets y rutas:** estados de la pantalla, accesibilidad, normalización de `/breed/:name`, pila de navegación de un deep link y 404.
+- **Ambientes:** flavor → `AppEnvironment`, la cinta de DEV y QA, y que cada ambiente exista como flavor en Android e iOS.
 - **Integración:** traza de scroll en modo profile.
 
-La CI (GitHub Actions) comprueba formato, análisis estático, que el código generado esté al día y las pruebas, y compila el APK y la app de iOS.
+La CI (GitHub Actions) comprueba formato, análisis estático, que el código generado esté al día y las pruebas, y compila el APK y la app de iOS del flavor prod.
 
 ## Decisiones y límites
 
 - **Hive CE** (el fork mantenido de Hive) en lugar de sqflite: es Dart puro, lee de memoria tras abrir la caja y la caché es un JSON por página; no hacía falta SQL.
+- **Ambientes con flavors nativos** y no con `--dart-define-from-file`: el flavor cambia el id, el nombre y el esquema de la app en cada plataforma (por eso se instalan lado a lado), y Dart lo lee con `appFlavor`. En Flutter 3.41 los valores de `--dart-define-from-file` solo llegan a Gradle y a Xcode codificados dentro de `DART_DEFINES`, así que lograr lo mismo exigía decodificarlos en los scripts de build.
 - **15 razas por página:** la API tiene 98; con 15 el scroll infinito se ejercita de verdad (7 páginas).
 - **La búsqueda es local**, como pide la prueba: filtra lo cargado y ofrece cargar más si lo buscado todavía no llegó.
 - **Datos curiosos en inglés:** vienen así de la API; la ficha lo aclara.
