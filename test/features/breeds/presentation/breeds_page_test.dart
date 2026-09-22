@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:cat_directory_app/core/error/failure.dart';
+import 'package:cat_directory_app/core/network/retry_interceptor.dart';
 import 'package:cat_directory_app/core/presentation/connectivity_cubit.dart';
 import 'package:cat_directory_app/features/breeds/domain/entities/breed.dart';
 import 'package:cat_directory_app/features/breeds/presentation/bloc/breeds_bloc.dart';
@@ -132,5 +133,21 @@ void main() {
       find.text('Sin conexión. Mostrando datos guardados hace 12 minutos.'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('mientras reintenta dice en que intento va', (tester) async {
+    when(() => connectivity.state).thenReturn(
+      const ConnectivityState(
+        retry: RetryAttempt(
+          attempt: 2,
+          maxRetries: 3,
+          delay: Duration(milliseconds: 800),
+          path: '/breeds',
+        ),
+      ),
+    );
+    await pumpPage(tester, const BreedsState(status: BreedsStatus.loading));
+
+    expect(find.text('Reconectando… intento 2 de 3'), findsOneWidget);
   });
 }
