@@ -18,7 +18,7 @@ jobs:
     name: Formato, analisis y pruebas
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: subosito/flutter-action@v2
         with:
@@ -46,9 +46,9 @@ jobs:
     needs: checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 17
@@ -61,7 +61,7 @@ jobs:
 
       - run: flutter build apk --release
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: nekodex-apk
           path: build/app/outputs/flutter-apk/app-release.apk
@@ -69,9 +69,10 @@ jobs:
   ios:
     name: Build de iOS (sin firma)
     needs: checks
-    runs-on: macos-15
+    # connectivity_plus 7 usa APIs del SDK de iOS 26: hace falta Xcode 26.
+    runs-on: macos-26
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: subosito/flutter-action@v2
         with:
