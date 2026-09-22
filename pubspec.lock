@@ -551,14 +551,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.20.0"
-  hive_ce_flutter:
-    dependency: "direct main"
-    description:
-      name: hive_ce_flutter
-      sha256: "2677e95a333ff15af43ccd06af7eb7abbf1a4f154ea071997f3de4346cae913a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.4"
   hooks:
     dependency: transitive
     description:
@@ -805,7 +797,7 @@ packages:
     source: hosted
     version: "1.9.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path_provider
       sha256: a7f4874f987173da295a61c181b8ee71dab59b332a486b391babf26a1b884825
