@@ -1,5 +1,6 @@
 import 'package:cat_directory_app/core/cache/json_cache.dart';
 import 'package:cat_directory_app/core/cache/key_value_store.dart';
+import 'package:cat_directory_app/core/config/app_environment.dart';
 import 'package:cat_directory_app/core/network/dio_factory.dart';
 import 'package:cat_directory_app/core/network/network_info.dart';
 import 'package:cat_directory_app/core/network/retry_interceptor.dart';
@@ -27,6 +28,7 @@ import 'package:cat_directory_app/features/settings/data/local_settings_reposito
 import 'package:cat_directory_app/features/settings/domain/settings_repository.dart';
 import 'package:cat_directory_app/features/settings/presentation/settings_cubit.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_ce/hive_ce.dart';
 import 'package:path_provider/path_provider.dart';
@@ -39,7 +41,7 @@ const cacheSchemaVersion = 1;
 
 /// Raiz de composicion: el unico lugar que conoce las implementaciones
 /// concretas. Las pantallas reciben sus blocs ya construidos.
-Future<void> configureDependencies() async {
+Future<void> configureDependencies(AppEnvironment environment) async {
   // Application Support y no Documents: es cache, no un archivo del usuario.
   final dir = await getApplicationSupportDirectory();
   Hive.init('${dir.path}/hive');
@@ -50,7 +52,13 @@ Future<void> configureDependencies() async {
 
   sl
     ..registerSingleton<RetryEvents>(retryEvents)
-    ..registerSingleton(buildDio(onRetry: retryEvents.add))
+    ..registerSingleton(
+      buildDio(
+        baseUrl: environment.apiBaseUrl,
+        onRetry: retryEvents.add,
+        log: kDebugMode && environment.httpLogs,
+      ),
+    )
     ..registerSingleton<NetworkInfo>(
       ConnectivityNetworkInfo(Connectivity()),
       dispose: (info) => (info as ConnectivityNetworkInfo).dispose(),

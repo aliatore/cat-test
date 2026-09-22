@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cat_directory_app/app/app.dart';
 import 'package:cat_directory_app/app/di/injection.dart';
 import 'package:cat_directory_app/app/router/app_router.dart';
+import 'package:cat_directory_app/core/config/app_environment.dart';
 import 'package:cat_directory_app/core/services/audio/sound_effects.dart';
 import 'package:cat_directory_app/core/services/notifications/notification_service.dart';
 import 'package:cat_directory_app/core/utils/log.dart';
@@ -20,7 +21,9 @@ Future<void> bootstrap() async {
   };
   if (kDebugMode) Bloc.observer = const _LogBlocObserver();
 
-  await configureDependencies();
+  final environment = AppEnvironment.current;
+  logDebug('app', 'ambiente ${environment.label}');
+  await configureDependencies(environment);
 
   final sounds = sl<SoundEffects>();
   unawaited(sounds.preload());
@@ -36,6 +39,7 @@ Future<void> bootstrap() async {
 
   runApp(
     NekoDexApp(
+      environment: environment,
       router: buildRouter(initialLocation: launchRoute),
       sounds: sounds,
       notifications: notifications,

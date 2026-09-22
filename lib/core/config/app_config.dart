@@ -1,23 +1,20 @@
-/// Valores que cambian entre entornos. El dominio de los App Links y
-/// Universal Links se puede sobrescribir al compilar:
-/// `--dart-define=DEEP_LINK_HOST=mi-dominio.com`.
+import 'package:cat_directory_app/core/config/app_environment.dart';
+
+/// Valores fijos de la app; lo que cambia por ambiente esta en
+/// [AppEnvironment]. El dominio de los App Links y Universal Links se puede
+/// sobrescribir al compilar: `--dart-define=DEEP_LINK_HOST=mi-dominio.com`.
 abstract final class AppConfig {
   static const deepLinkHost = String.fromEnvironment(
     'DEEP_LINK_HOST',
     defaultValue: 'luisturiz.com',
   );
 
-  /// Esquema propio para probar deep links sin dominio verificado:
-  /// `nekodex://open/breed/abyssinian`.
-  static const deepLinkScheme = 'nekodex';
-
   static const version = '1.0.0';
 
-  /// Tiempo en segundo plano a partir del cual se revalida al volver. Para
-  /// probarlo rapido: `--dart-define=REVALIDATE_AFTER_SECONDS=10`.
-  static const revalidateAfter = Duration(
-    seconds: int.fromEnvironment('REVALIDATE_AFTER_SECONDS', defaultValue: 300),
-  );
+  /// Version visible en Ajustes: `1.0.0` en prod y `1.0.0-dev` en los demas,
+  /// igual que el versionName de Android.
+  static String versionFor(AppEnvironment environment) =>
+      environment.isProduction ? version : '$version-${environment.name}';
 
   static Uri breedLink(String slug) => Uri.https(deepLinkHost, '/breed/$slug');
 }

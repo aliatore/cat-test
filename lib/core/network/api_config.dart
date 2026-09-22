@@ -1,6 +1,5 @@
+/// La URL base depende del ambiente (AppEnvironment.apiBaseUrl).
 abstract final class ApiConfig {
-  static const baseUrl = 'https://catfact.ninja';
-
   static const connectTimeout = Duration(seconds: 8);
   static const receiveTimeout = Duration(seconds: 10);
 

@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cat_directory_app/app/di/injection.dart';
 import 'package:cat_directory_app/app/view/splash_overlay.dart';
-import 'package:cat_directory_app/core/config/app_config.dart';
+import 'package:cat_directory_app/core/config/app_environment.dart';
 import 'package:cat_directory_app/core/presentation/connectivity_cubit.dart';
 import 'package:cat_directory_app/core/services/audio/sound_effects.dart';
 import 'package:cat_directory_app/core/services/notifications/notification_service.dart';
@@ -19,12 +19,14 @@ import 'package:go_router/go_router.dart';
 
 class NekoDexApp extends StatefulWidget {
   const NekoDexApp({
+    required this.environment,
     required this.router,
     required this.sounds,
     required this.notifications,
     super.key,
   });
 
+  final AppEnvironment environment;
   final GoRouter router;
   final SoundEffects sounds;
   final NotificationService notifications;
@@ -63,7 +65,8 @@ class _NekoDexAppState extends State<NekoDexApp> {
     final hiddenAt = _hiddenAt;
     _hiddenAt = null;
     if (hiddenAt == null) return;
-    if (DateTime.now().difference(hiddenAt) >= AppConfig.revalidateAfter) {
+    final away = DateTime.now().difference(hiddenAt);
+    if (away >= widget.environment.revalidateAfter) {
       _breeds.add(const BreedsRevalidateRequested());
     }
   }

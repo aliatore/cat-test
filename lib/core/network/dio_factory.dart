@@ -4,10 +4,14 @@ import 'package:cat_directory_app/core/utils/log.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 
-Dio buildDio({RetryListener? onRetry, bool log = kDebugMode}) {
+Dio buildDio({
+  required String baseUrl,
+  RetryListener? onRetry,
+  bool log = kDebugMode,
+}) {
   final dio = Dio(
     BaseOptions(
-      baseUrl: ApiConfig.baseUrl,
+      baseUrl: baseUrl,
       connectTimeout: ApiConfig.connectTimeout,
       receiveTimeout: ApiConfig.receiveTimeout,
       headers: const {'Accept': 'application/json'},

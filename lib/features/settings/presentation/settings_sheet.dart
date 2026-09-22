@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:cat_directory_app/core/config/app_config.dart';
+import 'package:cat_directory_app/core/config/app_environment.dart';
 import 'package:cat_directory_app/core/presentation/relative_time.dart';
 import 'package:cat_directory_app/core/services/audio/sound_effects.dart';
 import 'package:cat_directory_app/design_system/theme/motion.dart';
@@ -272,7 +273,7 @@ class _SettingsSheetState extends State<SettingsSheet> {
           const SizedBox(height: 22),
           Center(
             child: Text(
-              l10n.settingsAbout(AppConfig.version),
+              l10n.settingsAbout(AppConfig.versionFor(AppEnvironment.current)),
               style: NekoFonts.monoLabel(11).copyWith(color: colors.textMuted),
             ),
           ),
