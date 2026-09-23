@@ -6,6 +6,8 @@ Directorio de razas de gatos sobre la API pública de [Catfact Ninja](https://ca
 
 El proyecto se llama `cat_directory_app` (el `cat-directory-app` de la prueba, con guiones bajos porque Dart no acepta guiones en el nombre del paquete). El APK compilado está en [Releases](https://github.com/aliatore/cat-test/releases).
 
+**Manuales:** [de usuario](docs/manual-de-usuario.md) ([PDF](docs/manual-de-usuario.pdf)) · [técnico](docs/manual-tecnico.md) ([PDF](docs/manual-tecnico.pdf)).
+
 ![Directorio, búsqueda y ficha](docs/screenshots/directorio.png)
 ![Modo claro, ajustes y notificación](docs/screenshots/claro_y_ajustes.png)
 ![Sin red, sin datos y recuperación](docs/screenshots/sin_red.png)
